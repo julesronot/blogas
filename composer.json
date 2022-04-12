@@ -10,5 +10,10 @@
 	"psr-4": {
 	    "blogapp\\" : "src/"
 	}
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     }
 }
