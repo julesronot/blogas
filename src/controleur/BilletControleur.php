@@ -4,10 +4,11 @@ namespace blogapp\controleur;
 
 use blogapp\modele\Billet;
 use blogapp\vue\BilletVue;
+use blogapp\vue\IndexVue;
 
 class BilletControleur {
     private $cont;
-    
+
     public function __construct($conteneur) {
         $this->cont = $conteneur;
     }
@@ -23,8 +24,7 @@ class BilletControleur {
 
     public function liste($rq, $rs, $args) {
         $billets = Billet::get();
-
-        $bl = new BilletVue($this->cont, $billets, BilletVue::LISTE_VUE);
+        $bl = new IndexVue($this->cont, $billets, IndexVue::INDEX_VUE);
         $rs->getBody()->write($bl->render());
         return $rs;
     }
