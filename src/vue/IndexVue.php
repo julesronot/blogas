@@ -32,6 +32,8 @@ class IndexVue extends Vue {
         }
         $url_newutil = $this->cont->router->pathFor('util_nouveau');
         $url_connexion = $this->cont->router->pathFor('util_connexion');
+        $url_newbillet = $this->cont->router->pathFor('billet_nouveau');
+        $url_newcateg = $this->cont->router->pathFor('categ_nouveau');
         $res .= "</ul>";
         $res .= <<<YOP
         <a href = "$url_newutil">
@@ -40,8 +42,12 @@ class IndexVue extends Vue {
         <a href = "$url_connexion">
           <input type="button" value="Connexion">
         </a>
-        <input type="button" value="Ajouter un nouveau billet">
-        <input type="button" value="Ajouter une catégorie">
+        <a href = "$url_newbillet">
+          <input type="button" value="Ajouter un nouveau billet">
+        </a>
+        <a href = "$url_newcateg">
+          <input type="button" value="Ajouter une catégorie">
+        </a>
         YOP;
       }
       else
