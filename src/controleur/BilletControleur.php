@@ -28,4 +28,17 @@ class BilletControleur {
         $rs->getBody()->write($bl->render());
         return $rs;
     }
+
+    public function nouveau($rq, $rs, $args) {
+      $bl = new BilletVue($this->cont, null, BilletVue::BILLET_NOUVEAU);
+      $rs->getBody()->write($bl->render());
+      return $rs;
+    }
+
+    public function ajoute($rq, $rs, $args) {
+      $titre = filter_var($rq->getParsedBodyParam('titre'), FILTER_SANITIZE_STRING);
+      $body = filter_var($rq->getParsedBodyParam('message'), FILTER_SANITIZE_STRING);
+      $this->cont->flash->addMessage('info', "Billet $titre ajouté !");
+      return $rs->withRedirect($this->cont->router->pathFor('billet_liste'));
+    }
 }

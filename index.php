@@ -49,10 +49,26 @@ $app->post('/createutil',
 
 $app->get('/connexion',
           '\blogapp\controleur\UtilisateurControleur:connect')
-    ->setName('util_connexion');
+  ->setName('util_connexion');
 
 $app->post('/connecte',
            '\blogapp\controleur\UtilisateurControleur:connected')
     ->setName('util_connecte');
+
+$app->get('/newbillet',
+          '\blogapp\controleur\BilletControleur:nouveau')
+    ->setName('billet_nouveau');
+
+$app->post('/createbillet',
+           '\blogapp\controleur\BilletControleur:ajoute')
+    ->setName('billet_cree');
+
+$app->get('/newcateg',
+          '\blogapp\controleur\CategorieControleur:nouveau')
+    ->setName('categ_nouveau');
+
+$app->post('/createcateg',
+           '\blogapp\controleur\CategorieControleur:ajoute')
+    ->setName('categ_cree');
 
 $app->run();
