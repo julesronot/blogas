@@ -30,15 +30,24 @@ class IndexVue extends Vue {
             <li><a href="$url">{$billet->titre}</a></li>
             YOP;
         }
-      $res .= "</ul>";
-      $res .= <<<YOP
-      <input type="button" value="Créer un compte">
-      YOP;
-    }
-    else
+        $url_newutil = $this->cont->router->pathFor('util_nouveau');
+        $url_connexion = $this->cont->router->pathFor('util_connexion');
+        $res .= "</ul>";
+        $res .= <<<YOP
+        <a href = "$url_newutil">
+          <input type='button' value="Créer un compte"/>
+        </a>
+        <a href = "$url_connexion">
+          <input type="button" value="Connexion">
+        </a>
+        <input type="button" value="Ajouter un nouveau billet">
+        <input type="button" value="Ajouter une catégorie">
+        YOP;
+      }
+      else
         $res = "<h1>Erreur : la liste de billets n'existe pas !</h1>";
         return $res;
-  }
+      }
 
 }
 

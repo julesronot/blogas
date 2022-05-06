@@ -6,7 +6,7 @@ use blogapp\vue\Vue;
 class BilletVue extends Vue {
     const BILLET_VUE = 1;
     const LISTE_VUE = 2;
-    
+
     public function render() {
         switch($this->selecteur) {
         case self::BILLET_VUE:
@@ -30,6 +30,7 @@ class BilletVue extends Vue {
       <li>Catégorie : {$this->source->categorie->titre}</li>
       <li>Contenu : {$this->source->body}</li>
     </ul>
+    <input type="button" value="Commenter">
 YOP;
         }
         else
@@ -40,7 +41,7 @@ YOP;
 
     public function liste() {
         $res = "";
-        
+
         if ($this->source != null) {
             $res = <<<YOP
     <h1>Affichage de la liste des billets</h1>

@@ -47,4 +47,12 @@ $app->post('/createutil',
           '\blogapp\controleur\UtilisateurControleur:cree')
     ->setName('util_cree');
 
+$app->get('/connexion',
+          '\blogapp\controleur\UtilisateurControleur:connect')
+    ->setName('util_connexion');
+
+$app->post('/connecte',
+           '\blogapp\controleur\UtilisateurControleur:connected')
+    ->setName('util_connecte');
+
 $app->run();
