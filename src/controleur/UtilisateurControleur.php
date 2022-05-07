@@ -26,6 +26,9 @@ class UtilisateurControleur {
         $mail = filter_var($rq->getParsedBodyParam('mail'), FILTER_SANITIZE_STRING);
         $mdp = filter_var($rq->getParsedBodyParam('mdp'), FILTER_SANITIZE_STRING);
 
+        $test_username = Utilisateur::where('username', '=', $username) ->first() ;
+        $test_mail = Utilisateur::where('email', '=', $mail) ->first() ;
+
         if ($username == NULL){
           $this->cont->flash->addMessage('info', "Veuillez entrer un nom d'utilisateur.");
           return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
@@ -38,6 +41,20 @@ class UtilisateurControleur {
 
         if ($mail == NULL){
           $this->cont->flash->addMessage('info', "Veuillez entrer un email.");
+          return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
+        }
+
+        if ($test_username != NULL){
+            $this->cont->flash->addMessage('info',
+                                    "Ce nom d'utilisateur existe déjà.
+                                    Choisissez-en un autre ou connectez-vous.");
+            return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
+        }
+
+        if ($test_mail != NULL){
+          $this->cont->flash->addMessage('info',
+                                  "Cet email existe déjà.
+                                  Connectez-vous !");
           return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
         }
 
