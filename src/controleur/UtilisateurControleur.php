@@ -20,8 +20,6 @@ class UtilisateurControleur {
 
     public function cree($rq, $rs, $args) {
 
-        global $nextId ;
-
         $nom = filter_var($rq->getParsedBodyParam('nom'), FILTER_SANITIZE_STRING);
         $prenom = filter_var($rq->getParsedBodyParam('prenom'), FILTER_SANITIZE_STRING);
         $username = filter_var($rq->getParsedBodyParam('username'), FILTER_SANITIZE_STRING);

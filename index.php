@@ -71,4 +71,9 @@ $app->post('/createcateg',
            '\blogapp\controleur\CategorieControleur:ajoute')
     ->setName('categ_cree');
 
+
+$app->post('/commenter/{id}',
+           '\blogapp\controleur\CommentaireControleur:nouveau')
+    ->setName('commenter');
+
 $app->run();
