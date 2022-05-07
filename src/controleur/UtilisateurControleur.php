@@ -22,12 +22,24 @@ class UtilisateurControleur {
 
         global $nextId ;
 
+        $nom = filter_var($rq->getParsedBodyParam('nom'), FILTER_SANITIZE_STRING);
+        $prenom = filter_var($rq->getParsedBodyParam('prenom'), FILTER_SANITIZE_STRING);
         $username = filter_var($rq->getParsedBodyParam('username'), FILTER_SANITIZE_STRING);
         $mail = filter_var($rq->getParsedBodyParam('mail'), FILTER_SANITIZE_STRING);
         $mdp = password_hash(filter_var($rq->getParsedBodyParam('mdp'), FILTER_SANITIZE_STRING), PASSWORD_DEFAULT);
 
         $test_username = Utilisateur::where('username', '=', $username) ->first() ;
         $test_mail = Utilisateur::where('email', '=', $mail) ->first() ;
+
+        if ($nom == NULL){
+          $this->cont->flash->addMessage('error', "Veuillez préciser votre nom.");
+          return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
+        }
+
+        if ($prenom == NULL){
+          $this->cont->flash->addMessage('error', "Veuillez préciser votre prénom.");
+          return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
+        }
 
         if ($username == NULL){
           $this->cont->flash->addMessage('error', "Veuillez entrer un nom d'utilisateur.");
@@ -60,6 +72,8 @@ class UtilisateurControleur {
 
         //insertion dans la base
         $newutil = new Utilisateur() ;
+        $newutil->nom = $nom ;
+        $newutil->prenom = $prenom ;
         $newutil->email = $mail;
         $newutil->username = $username ;
         $newutil->mdp = $mdp ;
