@@ -3,10 +3,10 @@
 namespace blogapp\vue;
 use blogapp\vue\Vue;
 use blogapp\modele\Categorie;
+use blogapp\modele\Commentaire;
 
 class BilletVue extends Vue {
     const BILLET_VUE = 1;
-    //const LISTE_VUE = 2;
     const BILLET_NOUVEAU = 2 ;
 
     public function render() {
@@ -14,11 +14,6 @@ class BilletVue extends Vue {
         case self::BILLET_VUE:
             $content = $this->billet();
             break;
-            /*
-        case self::LISTE_VUE:
-            $content = $this->liste();
-            break;
-            */
         case self::BILLET_NOUVEAU:
             $content = $this->nouveau();
             break;
@@ -28,16 +23,41 @@ class BilletVue extends Vue {
 
     public function billet() {
         $res = "";
+        $billet = $this->source ;
+        $commentaires = Commentaire::where('id_billet', '=', $billet->id)->get() ;
 
         if ($this->source != null) {
             $res .= <<<YOP
-            <h1>Affichage du billet : {$this->source->id}</h1>
-            <h2>Nom : {$this->source->titre}</h2>
+            <h1>Affichage du billet : {$billet->id}</h1>
+            <h2>Nom : {$billet->titre}</h2>
             <ul>
-              <li>Catégorie : {$this->source->categorie->titre}</li>
-              <li>Contenu : {$this->source->body}</li>
+              <li>Catégorie : {$billet->categorie->titre}</li>
+              <li>Contenu : {$billet->body}</li>
             </ul>
-            <input type="button" value="Commenter">
+
+            <h3>Commentaires : </h3>
+            YOP;
+
+            foreach ($commentaires as $commentaire) {
+              $res.=<<<YOP
+                    <ul>
+                      <li>Le <strong>$commentaire->date : </strong> $commentaire->commentaire</li>
+                    </ul>
+              YOP;
+            }
+
+            $res .= <<<YOP
+            <form method="post" action="{$this->cont['router']->pathFor('commenter', ['id' => $billet->id])}">
+              <div>
+                <label for="comm">Votre commentaire :</label>
+                <textarea id="comm" name="commentaire"></textarea>
+              </div>
+              <input type="submit" value="Commenter">
+            </form>
+
+            <form method="get" action="{$this->cont['router']->pathFor('billet_liste')}">
+              <input type="submit" value="Retour à la liste des billets">
+            </form>
             YOP;
         }
         else

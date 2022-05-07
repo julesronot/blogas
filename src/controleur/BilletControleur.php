@@ -57,7 +57,7 @@ class BilletControleur {
       $billet->titre = $titre ;
       $billet->body = $body ;
       $billet->cat_id = $idcateg ;
-      $billet->date = date("y-m-d");
+      $billet->date = date("d-m-y");
       $billet->save();
 
       $this->cont->flash->addMessage('info', "Billet $titre ajouté !");

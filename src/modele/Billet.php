@@ -10,6 +10,11 @@ class Billet extends \Illuminate\Database\Eloquent\Model {
     public function categorie() {
         return $this->belongsTo('\blogapp\modele\Categorie', 'cat_id');
     }
+
+    public function commentaire() {
+        return $this->hasMany('\blogapp\modele\Commentaire', 'id_billet');
+    }
+
 }
 
 ?>

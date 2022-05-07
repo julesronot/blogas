@@ -7,6 +7,10 @@ class Utilisateur extends \Illuminate\Database\Eloquent\Model {
     protected $table = 'utilisateurs' ;
     protected $primaryKey = 'id' ;
     public $timestamps = false;
+
+    public function commentaire() {
+        return $this->hasMany('\blogapp\modele\Commentaire', 'id_user');
+    }
 }
 
 ?>
