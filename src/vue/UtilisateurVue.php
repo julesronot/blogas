@@ -24,7 +24,7 @@ class UtilisateurVue extends Vue {
         <form method="post" action="{$this->cont['router']->pathFor('util_cree')}">
         <div>
           <label for="name">Nom d'utilisateur :</label>
-          <input type="text" id="name" name="nom">
+          <input type="text" id="name" name="username">
         </div>
         <div>
           <label for="mail">e-mail&nbsp;:</label>
