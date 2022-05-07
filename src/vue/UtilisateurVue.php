@@ -36,6 +36,11 @@ class UtilisateurVue extends Vue {
         </div>
           <input type="submit" value="Inscription ">
         </form>
+
+        <form method="get" action="{$this->cont['router']->pathFor('util_connexion')}">
+          <label for="name">Déjà inscrit(e) ? Connectez vous </label>
+          <input type="submit" value="Connexion">
+        </form>
         YOP;
     }
 
