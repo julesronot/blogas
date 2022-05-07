@@ -2,6 +2,7 @@
 
 namespace blogapp\vue;
 use blogapp\vue\Vue;
+use blogapp\modele\Categorie;
 
 class BilletVue extends Vue {
     const BILLET_VUE = 1;
@@ -47,6 +48,7 @@ class BilletVue extends Vue {
 
     public function nouveau() {
       $res = "" ;
+      $categories = Categorie::select('titre')->get();
       $res .= <<<YOP
       <form method="post" action="{$this->cont['router']->pathFor('billet_cree')}">
         <div>
@@ -54,12 +56,27 @@ class BilletVue extends Vue {
           <input type="text" id="titre" name="titre">
         </div>
         <div>
+          <label for='categ_select'>Choisissez une catégorie : </label>
+          <select id='categ' name='categorie'>
+      YOP;
+
+              foreach($categories as $categ) {
+                $res.=<<<YOP
+                      <option>$categ->titre</option>
+      YOP;
+              }
+
+      $res.= <<<YOP
+
+          </select>
+        </div>
+        <div>
           <label for="msg">Message du billet :</label>
           <textarea id="msg" name="message"></textarea>
         </div>
         <input type="submit" value="Soumettre le billet">
       </form>
-      YOP;
+YOP;
       return $res ;
     }
 /*
