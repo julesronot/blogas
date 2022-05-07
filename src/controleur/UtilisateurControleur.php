@@ -24,35 +24,35 @@ class UtilisateurControleur {
 
         $username = filter_var($rq->getParsedBodyParam('username'), FILTER_SANITIZE_STRING);
         $mail = filter_var($rq->getParsedBodyParam('mail'), FILTER_SANITIZE_STRING);
-        $mdp = filter_var($rq->getParsedBodyParam('mdp'), FILTER_SANITIZE_STRING);
+        $mdp = password_hash(filter_var($rq->getParsedBodyParam('mdp'), FILTER_SANITIZE_STRING), PASSWORD_DEFAULT);
 
         $test_username = Utilisateur::where('username', '=', $username) ->first() ;
         $test_mail = Utilisateur::where('email', '=', $mail) ->first() ;
 
         if ($username == NULL){
-          $this->cont->flash->addMessage('info', "Veuillez entrer un nom d'utilisateur.");
+          $this->cont->flash->addMessage('error', "Veuillez entrer un nom d'utilisateur.");
           return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
         }
 
         if ($mdp == NULL){
-          $this->cont->flash->addMessage('info', "Veuillez entrer un mot de passe.");
+          $this->cont->flash->addMessage('error', "Veuillez entrer un mot de passe.");
           return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
         }
 
         if ($mail == NULL){
-          $this->cont->flash->addMessage('info', "Veuillez entrer un email.");
+          $this->cont->flash->addMessage('error', "Veuillez entrer un email.");
           return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
         }
 
         if ($test_username != NULL){
-            $this->cont->flash->addMessage('info',
+            $this->cont->flash->addMessage('error',
                                     "Ce nom d'utilisateur existe déjà.
                                     Choisissez-en un autre ou connectez-vous.");
             return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
         }
 
         if ($test_mail != NULL){
-          $this->cont->flash->addMessage('info',
+          $this->cont->flash->addMessage('error',
                                   "Cet email existe déjà.
                                   Connectez-vous !");
           return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
@@ -78,7 +78,23 @@ class UtilisateurControleur {
 
     public function connected($rq, $rs, $args) {
         $mail = filter_var($rq->getParsedBodyParam('mail'), FILTER_SANITIZE_STRING);
-        $this->cont->flash->addMessage('info', "Utilisateur $mail connecté !");
-        return $rs->withRedirect($this->cont->router->pathFor('billet_liste'));
+        $mdp = filter_var($rq->getParsedBodyParam('mdp'), FILTER_SANITIZE_STRING);
+
+        $user = Utilisateur::where('email', '=', $mail)->first() ;
+        if ($user == NULL){
+          $this->cont->flash->addMessage('error', "Utilisateur inexistant.");
+          return $rs->withRedirect($this->cont->router->pathFor('util_connexion'));
+        }
+        else{
+          $user_mdp = $user->mdp ;
+          if (!password_verify($mdp, $user_mdp)){
+            $this->cont->flash->addMessage('error', "Le mot de passe n'est pas correct.");
+            return $rs->withRedirect($this->cont->router->pathFor('util_connexion'));
+          }
+          else{
+            $this->cont->flash->addMessage('info', "Utilisateur $mail connecté !");
+            return $rs->withRedirect($this->cont->router->pathFor('billet_liste'));
+          }
+        }
     }
 }

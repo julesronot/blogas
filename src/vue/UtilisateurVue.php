@@ -57,6 +57,11 @@ class UtilisateurVue extends Vue {
       </div>
         <input type="submit" value="Connexion">
       </form>
+
+      <form method="get" action="{$this->cont['router']->pathFor('util_nouveau')}">
+        <label for="name">Pas de compte ?</label>
+        <input type="submit" value="Créer mon compte">
+      </form>
       YOP;
     }
 }
