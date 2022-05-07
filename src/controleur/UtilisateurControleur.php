@@ -3,6 +3,7 @@
 namespace blogapp\controleur;
 
 use blogapp\vue\UtilisateurVue;
+use blogapp\modele\Utilisateur;
 
 class UtilisateurControleur {
     private $cont;
@@ -18,13 +19,37 @@ class UtilisateurControleur {
     }
 
     public function cree($rq, $rs, $args) {
-        // Récupération variable POST + nettoyage
-        $nom = filter_var($rq->getParsedBodyParam('nom'), FILTER_SANITIZE_STRING);
-        // Insertion dans la base...
-        // ...
-        // Ajout d'un flash
-        $this->cont->flash->addMessage('info', "Utilisateur $nom ajouté !");
-        // Retour de la réponse avec redirection
+
+        global $nextId ;
+
+        $username = filter_var($rq->getParsedBodyParam('username'), FILTER_SANITIZE_STRING);
+        $mail = filter_var($rq->getParsedBodyParam('mail'), FILTER_SANITIZE_STRING);
+        $mdp = filter_var($rq->getParsedBodyParam('mdp'), FILTER_SANITIZE_STRING);
+
+        if ($username == NULL){
+          $this->cont->flash->addMessage('info', "Veuillez entrer un nom d'utilisateur.");
+          return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
+        }
+
+        if ($mdp == NULL){
+          $this->cont->flash->addMessage('info', "Veuillez entrer un mot de passe.");
+          return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
+        }
+
+        if ($mail == NULL){
+          $this->cont->flash->addMessage('info', "Veuillez entrer un email.");
+          return $rs->withRedirect($this->cont->router->pathFor('util_nouveau'));
+        }
+
+        //insertion dans la base
+        $newutil = new Utilisateur() ;
+        $newutil->email = $mail;
+        $newutil->username = $username ;
+        $newutil->mdp = $mdp ;
+        $newutil->statut = 'membre' ;
+        $newutil->save() ;
+
+        $this->cont->flash->addMessage('info', "Utilisateur $username ajouté !");
         return $rs->withRedirect($this->cont->router->pathFor('billet_liste'));
     }
 
