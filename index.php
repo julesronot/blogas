@@ -1,14 +1,13 @@
 <?php
 
-// Démarrage sessions PHP
-// (pour le support des variables de session)
 session_start();
 
 require 'vendor/autoload.php';
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-
+use \blogapp\authentification\Authentification ;
+use \blogapp\modele\Utilisateur ;
 use \blogapp\conf\ConnectionFactory;
 
 // Création de la connexion à la base
@@ -28,6 +27,17 @@ $configuration = [
 // Création du dispatcher
 
 $app = new \Slim\App($configuration);
+
+// Création d'un utilisateur public
+
+if (!isset($_SESSION['user'])){
+  
+  $public = new Utilisateur() ;
+  $public->username = 'anonyme' ;
+  $public->statut = 'public' ;
+
+  Authentification::loadProfile($public) ;
+}
 
 // Définition des routes
 
