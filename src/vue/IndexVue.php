@@ -2,6 +2,8 @@
 
 namespace blogapp\vue ;
 
+use blogapp\authentification\Authentification ;
+
 class IndexVue extends Vue {
 
   const INDEX_VUE = 1 ;
@@ -42,13 +44,23 @@ class IndexVue extends Vue {
         <a href = "$url_connexion">
           <input type="button" value="Connexion">
         </a>
-        <a href = "$url_newbillet">
-          <input type="button" value="Ajouter un nouveau billet">
-        </a>
-        <a href = "$url_newcateg">
-          <input type="button" value="Ajouter une catégorie">
-        </a>
         YOP;
+
+        if (Authentification::authlevel() >= 1){
+          $res .= <<<YOP
+          <a href = "$url_newbillet">
+            <input type="button" value="Ajouter un nouveau billet">
+          </a>
+          YOP;
+        }
+
+        if (Authentification::authlevel() == 2){
+          $res .=<<<YOP
+          <a href = "$url_newcateg">
+            <input type="button" value="Ajouter une catégorie">
+          </a>
+          YOP;
+        }
       }
       else
         $res = "<h1>Erreur : la liste de billets n'existe pas !</h1>";

@@ -4,6 +4,7 @@ namespace blogapp\controleur;
 
 use blogapp\vue\UtilisateurVue;
 use blogapp\modele\Utilisateur;
+use blogapp\authentification\Authentification;
 
 class UtilisateurControleur {
     private $cont;
@@ -26,8 +27,8 @@ class UtilisateurControleur {
         $mail = filter_var($rq->getParsedBodyParam('mail'), FILTER_SANITIZE_STRING);
         $mdp = password_hash(filter_var($rq->getParsedBodyParam('mdp'), FILTER_SANITIZE_STRING), PASSWORD_DEFAULT);
 
-        $test_username = Utilisateur::where('username', '=', $username) ->first() ;
-        $test_mail = Utilisateur::where('email', '=', $mail) ->first() ;
+        $test_username = Utilisateur::where('username', '=', $username) -> first() ;
+        $test_mail = Utilisateur::where('email', '=', $mail) -> first() ;
 
         if ($nom == NULL){
           $this->cont->flash->addMessage('error', "Veuillez préciser votre nom.");
@@ -78,6 +79,8 @@ class UtilisateurControleur {
         $newutil->statut = 'membre' ;
         $newutil->save() ;
 
+        Authentification::loadProfile($newutil) ;
+
         $this->cont->flash->addMessage('info', "Utilisateur $username ajouté !");
         return $rs->withRedirect($this->cont->router->pathFor('billet_liste'));
     }
@@ -104,7 +107,8 @@ class UtilisateurControleur {
             return $rs->withRedirect($this->cont->router->pathFor('util_connexion'));
           }
           else{
-            $this->cont->flash->addMessage('info', "Utilisateur $mail connecté !");
+            Authentification::loadProfile($user) ;
+            $this->cont->flash->addMessage('info', "Utilisateur $user->username connecté !");
             return $rs->withRedirect($this->cont->router->pathFor('billet_liste'));
           }
         }
