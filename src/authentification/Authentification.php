@@ -14,7 +14,9 @@ class Authentification {
 
         case 'admin' :
           $_SESSION['user'] = [
+            'id' => $newuser->id ,
             'username' => $newuser->username ,
+            'email' => $newuser->email ,
             'auth-level' => 2
           ];
           break ;

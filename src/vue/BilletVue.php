@@ -4,6 +4,7 @@ namespace blogapp\vue;
 use blogapp\vue\Vue;
 use blogapp\modele\Categorie;
 use blogapp\modele\Commentaire;
+use blogapp\modele\Utilisateur;
 use blogapp\authentification\Authentification ;
 
 class BilletVue extends Vue {
@@ -40,9 +41,10 @@ class BilletVue extends Vue {
             YOP;
 
             foreach ($commentaires as $commentaire) {
+              $user = Utilisateur::where('id', '=', $commentaire->id_user)->first() ;
               $res.=<<<YOP
                     <ul>
-                      <li>Le <strong>$commentaire->date : </strong> $commentaire->commentaire</li>
+                      <li>Le <strong>$commentaire->date</strong>(@$user->username): $commentaire->commentaire</li>
                     </ul>
               YOP;
             }

@@ -28,6 +28,7 @@ class CommentaireControleur
     $comm->commentaire = $commentaire ;
     $comm->date = date("y-m-d");
     $comm->id_billet = $id_billet ;
+    $comm->id_user = $_SESSION['user']['id'] ;
     $comm->save() ;
 
     $this->cont->flash->addMessage('info', "Commentaire ajouté !");
