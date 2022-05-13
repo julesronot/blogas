@@ -4,6 +4,7 @@ namespace blogapp\controleur;
 
 use blogapp\modele\Billet;
 use blogapp\modele\Categorie;
+use blogapp\modele\Utilisateur;
 use blogapp\vue\BilletVue;
 use blogapp\vue\IndexVue;
 
@@ -43,6 +44,8 @@ class BilletControleur {
       $categ = Categorie::select('id')->where('titre', '=', $nomcateg)->first();
       $idcateg = $categ->id;
 
+      $user = Utilisateur::where('id', '=', $_SESSION['user']['id'])->first();
+
       if ($titre == NULL){
         $this->cont->flash->addMessage('error', "Donnez un titre à votre billet.");
         return $rs->withRedirect($this->cont->router->pathFor('billet_nouveau'));
@@ -58,6 +61,7 @@ class BilletControleur {
       $billet->body = $body ;
       $billet->cat_id = $idcateg ;
       $billet->date = date("d-m-y");
+      $billet->id_user = $user->id ;
       $billet->save();
 
       $this->cont->flash->addMessage('info', "Billet $titre ajouté !");

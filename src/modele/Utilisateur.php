@@ -11,6 +11,10 @@ class Utilisateur extends \Illuminate\Database\Eloquent\Model {
     public function commentaire() {
         return $this->hasMany('\blogapp\modele\Commentaire', 'id_user');
     }
+
+    public function billet() {
+      return $this->hasMany('\blogapp\modele\Billet', 'id_user') ;
+    }
 }
 
 ?>
