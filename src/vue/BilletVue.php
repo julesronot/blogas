@@ -4,6 +4,7 @@ namespace blogapp\vue;
 use blogapp\vue\Vue;
 use blogapp\modele\Categorie;
 use blogapp\modele\Commentaire;
+use blogapp\authentification\Authentification ;
 
 class BilletVue extends Vue {
     const BILLET_VUE = 1;
@@ -46,15 +47,25 @@ class BilletVue extends Vue {
               YOP;
             }
 
-            $res .= <<<YOP
-            <form method="post" action="{$this->cont['router']->pathFor('commenter', ['id' => $billet->id])}">
-              <div>
-                <label for="comm">Votre commentaire :</label>
-                <textarea id="comm" name="commentaire"></textarea>
-              </div>
-              <input type="submit" value="Commenter">
-            </form>
+            if (Authentification::authlevel() >= 1){
+              $res .= <<<YOP
+              <form method="post" action="{$this->cont['router']->pathFor('commenter', ['id' => $billet->id])}">
+                <div>
+                  <label for="comm">Votre commentaire :</label>
+                  <textarea id="comm" name="commentaire"></textarea>
+                </div>
+                <input type="submit" value="Commenter">
+              </form>
+              YOP;
+            }
+            else{
+              $res .=<<<YOP
+              <p>Vous devez être connecté(e) pour pouvoir commenter un billet.</p>
+              YOP;
+            }
 
+
+            $res .= <<<YOP
             <form method="get" action="{$this->cont['router']->pathFor('billet_liste')}">
               <input type="submit" value="Retour à la liste des billets">
             </form>
