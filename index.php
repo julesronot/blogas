@@ -31,7 +31,7 @@ $app = new \Slim\App($configuration);
 // Création d'un utilisateur public
 
 if (!isset($_SESSION['user'])){
-  
+
   $public = new Utilisateur() ;
   $public->username = 'anonyme' ;
   $public->statut = 'public' ;
@@ -65,6 +65,14 @@ $app->post('/connecte',
            '\blogapp\controleur\UtilisateurControleur:connected')
     ->setName('util_connecte');
 
+$app->get('/membres',
+          '\blogapp\controleur\UtilisateurControleur:liste')
+    ->setName('membres_liste');
+
+$app->post('/radier/{id}',
+           '\blogapp\controleur\UtilisateurControleur:radier')
+    ->setName('radier');
+
 $app->get('/newbillet',
           '\blogapp\controleur\BilletControleur:nouveau')
     ->setName('billet_nouveau');
@@ -80,7 +88,6 @@ $app->get('/newcateg',
 $app->post('/createcateg',
            '\blogapp\controleur\CategorieControleur:ajoute')
     ->setName('categ_cree');
-
 
 $app->post('/commenter/{id}',
            '\blogapp\controleur\CommentaireControleur:nouveau')

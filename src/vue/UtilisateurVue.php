@@ -3,18 +3,24 @@
 namespace blogapp\vue;
 
 use blogapp\vue\Vue;
+use blogapp\modele\Utilisateur;
 
 class UtilisateurVue extends Vue {
     const NOUVEAU_VUE = 1;
     const CONNECT_VUE = 2;
+    const LISTE_VUE = 3 ;
 
     public function render() {
         switch($this->selecteur) {
-        case self::NOUVEAU_VUE:
-            $content = $this->nouveau();
-            break;
-        case self::CONNECT_VUE:
-            $content = $this->connect();
+          case self::NOUVEAU_VUE:
+              $content = $this->nouveau();
+              break;
+          case self::CONNECT_VUE:
+              $content = $this->connect();
+              break;
+          case self::LISTE_VUE:
+              $content = $this->liste();
+              break;
         }
         return $this->userPage($content);
     }
@@ -71,5 +77,20 @@ class UtilisateurVue extends Vue {
         <input type="submit" value="Créer mon compte">
       </form>
       YOP;
+    }
+
+    public function liste() {
+      $res = "<h1>Liste des membres</h1>" ;
+      $users = Utilisateur::select('id', 'username')->get() ;
+      foreach($users as $user){
+        $res .= <<<YOP
+        <form method="post" action="{$this->cont->router->pathFor('radier', ['id' => $user->id])}">
+          <p>$user->username
+          <input type="submit" value="Radier"></p>
+        </form>
+
+        YOP;
+      }
+      return $res ;
     }
 }

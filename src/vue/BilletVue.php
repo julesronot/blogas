@@ -112,28 +112,4 @@ class BilletVue extends Vue {
 YOP;
       return $res ;
     }
-/*
-    public function liste() {
-        $res = "";
-
-        if ($this->source != null) {
-            $res = <<<YOP
-    <h1>Affichage de la liste des billets</h1>
-    <ul>
-YOP;
-
-            foreach ($this->source as $billet) {
-                $url = $this->cont->router->pathFor('billet_aff', ['id' => $billet->id]);
-                $res .= <<<YOP
-      <li><a href="$url">{$billet->titre}</a></li>
-YOP;
-            }
-            $res .= "</ul>";
-        }
-        else
-            $res = "<h1>Erreur : la liste de billets n'existe pas !</h1>";
-
-        return $res;
-    }
-*/
 }
