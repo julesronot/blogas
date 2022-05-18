@@ -4,6 +4,8 @@ namespace blogapp\controleur;
 
 use blogapp\vue\UtilisateurVue;
 use blogapp\modele\Utilisateur;
+use blogapp\modele\Billet;
+use blogapp\modele\Commentaire;
 use blogapp\authentification\Authentification;
 
 class UtilisateurControleur {
@@ -112,5 +114,31 @@ class UtilisateurControleur {
             return $rs->withRedirect($this->cont->router->pathFor('billet_liste'));
           }
         }
+    }
+
+    public function liste($rq, $rs, $args) {
+      $bl = new UtilisateurVue($this->cont, null, UtilisateurVue::LISTE_VUE);
+      $rs->getBody()->write($bl->render());
+      return $rs;
+    }
+
+    public function radier($rq, $rs, $args) {
+      $id_user = $args['id'] ;
+      //suppression de l'utilisateur
+      $user = Utilisateur::where('id', '=', $id_user)->first() ;
+      $user->delete() ;
+      //suppression des billets associés
+      $billets = Billet::where('id_user', '=', $id_user)->get() ;
+      foreach($billets as $billet){
+        $billet->delete();
+      }
+      //suppression des commentaires associés
+      $commentaires = Commentaire::where('id_user', '=', $id_user)->get() ;
+      foreach($commentaires as $commentaire){
+        $commentaire->delete();
+      }
+
+      $this->cont->flash->addMessage('info', "Utilisateur supprimé !");
+      return $rs->withRedirect($this->cont->router->pathFor('membres_liste'));
     }
 }
