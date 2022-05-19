@@ -37,6 +37,7 @@ class IndexVue extends Vue {
         $url_newbillet = $this->cont->router->pathFor('billet_nouveau');
         $url_newcateg = $this->cont->router->pathFor('categ_nouveau');
         $url_membresListe = $this->cont->router->pathFor('membres_liste');
+        $url_deconnexion = $this->cont->router->pathFor('deconnexion') ;
 
         $res .= "</ul>";
         $res .= <<<YOP
@@ -63,6 +64,14 @@ class IndexVue extends Vue {
           </a>
           <a href = "$url_membresListe">
             <input type="button" value="Liste des membres">
+          </a>
+          YOP;
+        }
+
+        if ((Authentification::authlevel() >= 1) && (isset($_SESSION['user']))) {
+          $res .=<<<YOP
+          <a href = "$url_deconnexion">
+            <input type="button" value="Déconnexion">
           </a>
           YOP;
         }
