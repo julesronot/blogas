@@ -69,6 +69,10 @@ $app->get('/membres',
           '\blogapp\controleur\UtilisateurControleur:liste')
     ->setName('membres_liste');
 
+$app->get('/deconnexion',
+          '\blogapp\controleur\UtilisateurControleur:deconnexion')
+    ->setName('deconnexion');
+
 $app->post('/radier/{id}',
            '\blogapp\controleur\UtilisateurControleur:radier')
     ->setName('radier');

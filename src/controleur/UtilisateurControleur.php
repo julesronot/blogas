@@ -141,4 +141,11 @@ class UtilisateurControleur {
       $this->cont->flash->addMessage('info', "Utilisateur supprimé !");
       return $rs->withRedirect($this->cont->router->pathFor('membres_liste'));
     }
+
+
+    public function deconnexion($rq, $rs, $args){
+      $this->cont->flash->addMessage('info', "Vous vous êtes bien déconnecté(e).");
+      session_destroy() ;
+      return $rs->withRedirect($this->cont->router->pathFor('billet_liste'));
+    }
 }
